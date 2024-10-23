@@ -1,0 +1,106 @@
+import random
+
+# список учеников
+students = ['Аполлон', 'Ярослав', 'Александра', 'Дарья', 'Ангелина']
+# отсортируем список учеников
+students.sort()
+
+# список предметов
+classes = ['Математика', 'Русский язык', 'Информатика']
+
+# пустой словарь с оценками по каждому ученику и предмету
+students_marks = {}
+
+# сгенерируем данные по оценкам
+for student in students:
+    students_marks[student] = {}
+    for class_ in classes:
+        marks = [random.randint(1, 5) for _ in range(3)]  # генерируем список из 3х случайных оценок
+        students_marks[student][class_] = marks
+
+# Выводим получившийся словарь с оценками
+for student in students:
+    print(f'{student}: {students_marks[student]}')
+
+print('Список команд:')
+print('1. Добавить оценку ученика по предмету')
+print('2. Вывести средний балл по всем предметам по каждому ученику')
+print('3. Вывести все оценки по всем ученикам')
+print('4. Удалить оценку ученика по предмету')
+print('5. Удалить предмет у ученика')
+print('6. Удалить ученика')
+print('7. Выход из программы')
+
+while True:
+    command = int(input('Введите команду: '))
+
+    if command == 1:
+        print('1. Добавить оценку ученика по предмету')
+        student = input('Введите имя ученика: ')
+        class_ = input('Введите предмет: ')
+        mark = int(input('Введите оценку: '))
+
+        if student in students_marks and class_ in students_marks[student]:
+            students_marks[student][class_].append(mark)
+            print(f'Для {student} по предмету {class_} добавлена оценка {mark}')
+        else:
+            print('ОШИБКА: неверное имя ученика или название предмета')
+
+    elif command == 2:
+        print('2. Вывести средний балл по всем предметам по каждому ученику')
+        for student in students:
+            print(student)
+            for class_ in classes:
+                marks_sum = sum(students_marks[student][class_])
+                marks_count = len(students_marks[student][class_])
+                print(f'{class_} - {marks_sum / marks_count:.2f}')
+            print()
+
+    elif command == 3:
+        print('3. Вывести все оценки по всем ученикам')
+        for student in students:
+            print(student)
+            for class_ in classes:
+                print(f't{class_} - {students_marks[student][class_]}')
+            print()
+
+    elif command == 4:
+        print('4. Удалить оценку ученика по предмету')
+        student = input('Введите имя ученика: ')
+        class_ = input('Введите предмет: ')
+        index = int(input('Введите номер оценки для удаления (начиная с 0): '))
+
+        if student in students_marks and class_ in students_marks[student]:
+            if 0 <= index < len(students_marks[student][class_]):
+                removed_mark = students_marks[student][class_].pop(index)
+                print(f'Оценка {removed_mark} удалена для {student} по предмету {class_}')
+            else:
+                print('ОШИБКА: неверный индекс оценки')
+        else:
+            print('ОШИБКА: неверное имя ученика или название предмета')
+
+    elif command == 5:
+        print('5. Удалить предмет у ученика')
+        student = input('Введите имя ученика: ')
+        class_ = input('Введите предмет: ')
+
+        if student in students_marks and class_ in students_marks[student]:
+            del students_marks[student][class_]
+            print(f'Предмет {class_} удален для {student}')
+        else:
+            print('ОШИБКА: неверное имя ученика или название предмета')
+
+    elif command == 6:
+        print('6. Удалить ученика')
+        student = input('Введите имя ученика: ')
+
+        if student in students_marks:
+            del students_marks[student]
+            students.remove(student)
+            print(f'Ученик {student} удален')
+        else:
+            print('ОШИБКА: неверное имя ученика')
+
+    elif command == 7:
+        print('Выход из программы')
+        break
